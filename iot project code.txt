@@ -1,0 +1,52 @@
+#include <SoftwareSerial.h>
+
+#define rxPin 2
+#define txPin 3
+SoftwareSerial mySerial =  SoftwareSerial(rxPin, txPin);
+
+#define rxPin1 4
+#define txPin1 5
+SoftwareSerial mySerial1 =  SoftwareSerial(rxPin1, txPin1);
+
+#define rxPin2 6
+#define txPin2 7
+SoftwareSerial mySerial2 =  SoftwareSerial(rxPin2, txPin2);
+
+int Temp;
+int val;
+int humidity; // Variable to store humidity
+
+void setup()
+{
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);
+  mySerial.begin(9600);
+
+  pinMode(rxPin1, INPUT);
+  pinMode(txPin1, OUTPUT);
+  mySerial1.begin(9600);
+  
+  pinMode(rxPin2, INPUT);
+  pinMode(txPin2, OUTPUT);
+  mySerial2.begin(9600);
+
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  Temp = analogRead(A0);
+  Temp = map(Temp, 0, 1024, 0, 255);
+  mySerial.write(Temp);
+  delay(10);
+
+  val = analogRead(A1);
+  val = map(val, 1, 700, 0, 255);
+  mySerial1.write(val);
+  delay(10);
+  
+  humidity = analogRead(A2); // Read humidity sensor
+  humidity = map(humidity, 0, 1024, 0, 100); // Map humidity value to 0-100 range
+  mySerial2.write(humidity); // Write humidity value
+  delay(10);
+}
